@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
 import { Grid, Form, Segment, Header, Icon, Button, Message } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { db } from '../../../server/firebase.js';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import '../Auth.css';
 
 const Login = () => {
   const auth = getAuth();
-  const navigate = useNavigate();
   const [userState, setUserState] = useState({ email: '', password: '' });
   const [isLoading, setIsLoading] = useState(false);
   const [errorState, setErrorState] = useState([]);
@@ -33,9 +34,11 @@ const Login = () => {
     if (checkForm()) {
       setIsLoading(true);
       signInWithEmailAndPassword(auth, userState.email, userState.password)
-        .then(() => {
+        .then(userCredential => {
           setIsLoading(false);
-          navigate('/Sidebar'); // Navigate to the dashboard after successful login
+          const user = userCredential.user;
+          console.log(user);
+          // You can navigate to another page or perform other actions upon successful login
         })
         .catch(error => {
           setIsLoading(false);
@@ -49,10 +52,9 @@ const Login = () => {
   };
 
   return (
-    <div className='flex justify-center items-center h-screen bg-gradient-to-b from-yellow-300 to-blue-500 w-screen'>
-      <Grid verticalAlign="middle" textAlign="center" style={{ width: '100%', maxWidth: '400px' }}>
-        <Grid.Column >
-        <Header icon as="h2" >
+    <Grid verticalAlign="middle" textAlign="center" className="grid-form">
+      <Grid.Column style={{ maxWidth: '500px' }}>
+        <Header icon as="h2">
           <Icon name="user" />
           Login
         </Header>
@@ -88,11 +90,10 @@ const Login = () => {
           </Message>
         )}
         <Message>
-          Not a User? <NavLink to="/register">Register</NavLink>
+          Not a User? <Link to="/register">Register</Link>
         </Message>
       </Grid.Column>
     </Grid>
-    </div>
   );
 };
 
