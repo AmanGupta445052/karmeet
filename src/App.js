@@ -1,5 +1,4 @@
 import './App.css';
-<<<<<<< HEAD
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css';
@@ -20,14 +19,6 @@ function App() {
       </Routes>
     </Router>
   </React.StrictMode>
-=======
-
-function App() {
-  return (
-    <div className="App">
-     <h1>KARMEET</h1>
-    </div>
->>>>>>> 01afc2851b5017008f2e127f5a86a33c157135f8
   );
 }
 
